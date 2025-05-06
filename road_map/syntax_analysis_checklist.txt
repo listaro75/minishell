@@ -1,0 +1,26 @@
+
+# Analyse Syntaxique - Minishell Bonus (Checklist)
+
+## 1. Validation de la syntaxe
+- [ ] Vérifier que la liste de tokens n’est pas vide.
+- [ ] Détecter les erreurs classiques : 
+  - [ ] Double opérateur sans commande entre (ex: `| |`).
+  - [ ] Redirection sans fichier (ex: `>`, `>>`, `<`, `<<` sans mot après).
+  - [ ] Opérateur en début ou fin de ligne (ex: `| cmd`, `cmd |`).
+  - [ ] Parenthèses non fermées.
+- [ ] Vérifier l’équilibre des parenthèses.
+
+## 2. Construction d’une arborescence
+- [ ] Implémenter une structure `t_ast` pour l’arbre de syntaxe abstraite.
+- [ ] Identifier les opérateurs de séparation (`;`, `&&`, `||`) comme nœuds.
+- [ ] Attacher les commandes/arguments comme feuilles de l’arbre.
+- [ ] Gérer les sous-shells avec parenthèses (`( cmd )`).
+
+## 3. Préparation à l'exécution
+- [ ] Transformer les nœuds de l’AST en structure exécutable.
+- [ ] Associer chaque commande à ses redirections.
+- [ ] Associer chaque commande à ses arguments.
+
+## 4. Bonus
+- [ ] Gérer les erreurs syntaxiques avec messages clairs.
+- [ ] Gérer les opérateurs imbriqués (`( ls && echo ok ) || echo fail`).

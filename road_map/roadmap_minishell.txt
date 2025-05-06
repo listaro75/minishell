@@ -1,0 +1,60 @@
+
+MINISHELL - ROADMAP (Projet 42)
+
+Étape 1 - Setup de base
+------------------------
+[X] Créer le repo, Makefile, includes/, srcs/, libft/
+[X] Intégrer readline (linker avec -lreadline)
+[X] Setup affichage prompt + lecture input
+
+Étape 2 - Parsing
+-----------------
+[ ] Séparer les commandes / arguments (tokenisation)
+[ ] Gérer les quotes (' et ")
+[ ] Identifier les redirections (<, >, >>, <<) et pipes (|)
+[ ] Créer une structure de commandes (arbre, liste chaînée...)
+
+Étape 3 - Expansion
+-------------------
+[ ] Implémenter remplacement de $VAR, $?, etc.
+[ ] Supprimer/adapter les quotes après expansion
+
+Étape 4 - Exécution
+-------------------
+[ ] Implémenter fork + execve + waitpid
+[ ] Gérer les pipes (pipe + dup2)
+[ ] Implémenter les redirections (open, dup2, close)
+[ ] Support des erreurs et retours ($?)
+
+Étape 5 - Builtins
+------------------
+[ ] echo
+[ ] cd
+[ ] pwd
+[ ] export / unset
+[ ] env
+[ ] exit
+
+Étape 6 - Environnement
+-----------------------
+[ ] Représentation interne de l'environnement
+[ ] Mise à jour avec export/unset
+[ ] Générer char **envp pour execve
+
+Étape 7 - Signaux
+-----------------
+[ ] Gérer Ctrl-C, Ctrl-\
+[ ] Ignorer Ctrl-D (si besoin)
+[ ] kill des processus enfants
+
+Étape 8 - Gestion mémoire
+-------------------------
+[ ] Free toutes les structures à la fin
+[ ] Free après heredoc, erreur exec, etc.
+
+Étape 9 - BONUS
+---------------
+[ ] Support de &&, ||, ()
+[ ] Multiples heredocs
+[ ] Wildcards (*, ?)
+[ ] Améliorations terminales (curseur, display dynamique...)

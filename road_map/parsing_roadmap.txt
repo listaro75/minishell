@@ -1,0 +1,58 @@
+
+# Parsing Roadmap - Minishell Bonus (Checklist)
+
+## 1. Tokenisation
+- [x] Parcourir la ligne d'entrée caractère par caractère.
+- [x] Ignorer les espaces hors quotes.
+- [x] Détecter et isoler les opérateurs simples : |, <, >, ;, (, ).
+- [x] Détecter et isoler les opérateurs doubles : &&, ||, <<, >>.
+- [x] Gérer les quotes simples '...' et doubles "..." correctement.
+- [x] Gérer le caractère d'échappement \ (ex: echo \"Hello\").
+- [x] Créer un token pour chaque mot ou opérateur rencontré.
+- [x] Signaler une erreur si les quotes ne sont pas fermées.
+
+## 2. Structure des Tokens
+- [x] Créer un typedef enum e_token_type pour classer les types :
+  - WORD, PIPE, REDIR_IN, REDIR_OUT, APPEND, HEREDOC, AND, OR, PAREN_LEFT, PAREN_RIGHT, END.
+- [X] Créer la structure t_token contenant :
+  - t_token_type type;
+  - char *content;
+  - struct s_token *next;
+
+## 3. Construction de la Liste
+- [x] Allouer dynamiquement chaque t_token.
+- [x] Remplir correctement type et content.
+- [x] Relier les tokens entre eux via next.
+- [x] Terminer la liste proprement avec un NULL.
+
+## 4. Objectif final
+- [x] Obtenir une liste chaînée propre de tous les tokens prêts pour l'analyse syntaxique.
+- [x] Être capable d'afficher toute la liste pour debug.
+
+## 5. Bonus Bonus !
+- [x] Ajouter un champ "quoted" dans t_token pour indiquer si le mot était entre quotes.
+- [x] Ajouter un champ "expandable" pour gérer l'expansion de variables plus tard ($VAR).
+
+---
+
+# Exemple visuel rapide
+
+Pour la commande :
+echo "Hello World" | grep Hello
+
+La liste de t_token sera :
+
+Type        | Contenu
+------------|------------
+WORD        | "echo"
+WORD        | "Hello World"
+PIPE        | "|"
+WORD        | "grep"
+WORD        | "Hello"
+END         | NULL
+
+Chaque token pointe vers le suivant jusqu'à la fin !
+
+---
+
+Allez courage, tu vas gérer chef ! 🚀

@@ -1,0 +1,54 @@
+
+# Structure t_token - Détail et Explication
+
+## Définition du type de token
+```c
+typedef enum e_token_type
+{
+    WORD,        // Un mot classique (commande, argument, nom de fichier)
+    PIPE,        // |
+    REDIR_IN,    // <
+    REDIR_OUT,   // >
+    APPEND,      // >>
+    HEREDOC,     // <<
+    AND,         // &&
+    OR,          // ||
+    PAREN_LEFT,  // (
+    PAREN_RIGHT, // )
+    END          // Fin de la liste
+}   t_token_type;
+```
+
+## Structure principale d’un token
+```c
+typedef struct s_token
+{
+    t_token_type    type;       // Type du token
+    char            *content;   // Texte du token
+    int             quoted;     // Était-il entre quotes ?
+    int             expandable; // Faut-il l'expanser ? (ex: $VAR)
+    struct s_token  *next;      // Token suivant dans la liste
+}   t_token;
+```
+
+## Exemple concret
+Pour la commande :
+```bash
+echo "Hello" | grep ok > file.txt
+```
+
+Tu pourrais avoir cette liste chaînée :
+- type: WORD, content: "echo"
+- type: WORD, content: "Hello", quoted: 1
+- type: PIPE, content: "|"
+- type: WORD, content: "grep"
+- type: WORD, content: "ok"
+- type: REDIR_OUT, content: ">"
+- type: WORD, content: "file.txt"
+- type: END
+
+Chaque élément pointe sur le suivant avec `next`.
+
+---
+
+Pense à free chaque token à la fin de l’exécution ! 🧠

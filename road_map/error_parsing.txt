@@ -1,0 +1,32 @@
+pas en debut de ligne    -> ok
+| & || &&
+
+pas en fin de ligne
+| || && < > >> <<  -> ok
+
+pas en x3
+| &&& >>> ->
+
+sans rien au milieux
+pour | -> |  && || << -> ok
+
+pour > -> |  > < || && >> <<
+
+pour < -> |  > < || && >> <<
+
+pour || -> |  || && <<
+
+pour && -> |  || && <<
+
+pour >> -> |  > < || && << >>
+pour << -> |  > < || && >> <<
+
+
+
+
+marche et devrait pas
+(ls (pwd))
+()
+( )
+(( ))
+((ls | grep))
