@@ -6,7 +6,7 @@
 /*   By: luda-cun <luda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 13:56:31 by mhanarte          #+#    #+#             */
-/*   Updated: 2025/05/06 15:12:14 by luda-cun         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:45:24 by luda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*tokenisation(char *line)
 	expandable = 0;
 	i = 0;
 	token = NULL;
-	tmp = ft_strtrim(line, " \t\n\r\v\f"); // nomal le ' ' ?
+	tmp = ft_strtrim(line, " \t\n\r\v\f");
 	if (!tmp || !*tmp || is_invalid_line(tmp))
 		return (free(tmp), NULL);
 	while (tmp[i])
@@ -44,7 +44,7 @@ t_token	*tokenisation(char *line)
 		}
 		else if (tmp[i] == '<' && tmp[i + 1] != '<')
 		{
-			token = add_token(&token, REDIR_IN, ft_strdup(">"), 0, 0);
+			token = add_token(&token, REDIR_IN, ft_strdup("<"), 0, 0);
 			i++;
 		}
 		else if (tmp[i] == '|' && tmp[i + 1] == '|')

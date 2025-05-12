@@ -1,0 +1,110 @@
+
+=== NOUVELLE SESSION DE TEST (2025-05-06 14:24:17) ===
+
+ERREUR: < cat
+  Fichier: test_parser.c
+  Ligne: 123
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 14:24:17
+---------------------------------------
+  Commande testée: "< cat"
+  Attendu: Commande invalide (non-0)
+  Obtenu: Commande valide (0)
+
+ERREUR: check_parenthesis non fermée
+  Fichier: test_parser.c
+  Ligne: 158
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 14:24:17
+---------------------------------------
+ERREUR: check_parenthesis mal fermée
+  Fichier: test_parser.c
+  Ligne: 162
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 14:24:17
+---------------------------------------
+
+=== FIN DE SESSION - 3 erreurs détectées ===
+======================================
+
+
+=== NOUVELLE SESSION DE TEST (2025-05-06 15:43:37) ===
+
+ERREUR: < cat
+  Fichier: test_parser.c
+  Ligne: 123
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 15:43:37
+---------------------------------------
+  Commande testée: "< cat"
+  Attendu: Commande invalide (non-0)
+  Obtenu: Commande valide (0)
+
+ERREUR: check_parenthesis non fermée
+  Fichier: test_parser.c
+  Ligne: 158
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 15:43:37
+---------------------------------------
+ERREUR: check_parenthesis mal fermée
+  Fichier: test_parser.c
+  Ligne: 162
+  Fonction: test_parser
+  Date/Heure: 2025-05-06 15:43:37
+---------------------------------------
+
+=== FIN DE SESSION - 3 erreurs détectées ===
+======================================
+
+
+=== NOUVELLE SESSION DE TEST (2025-05-12 15:24:07) ===
+
+ERREUR: < cat
+  Fichier: test_parser.c
+  Ligne: 123
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 15:24:07
+---------------------------------------
+  Commande testée: "< cat"
+  Attendu: Commande invalide (non-0)
+  Obtenu: Commande valide (0)
+
+ERREUR: check_parenthesis non fermée
+  Fichier: test_parser.c
+  Ligne: 158
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 15:24:07
+---------------------------------------
+ERREUR: check_parenthesis mal fermée
+  Fichier: test_parser.c
+  Ligne: 162
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 15:24:07
+---------------------------------------
+
+=== FIN DE SESSION - 3 erreurs détectées ===
+======================================
+
+
+=== NOUVELLE SESSION DE TEST (2025-05-12 15:31:46) ===
+
+ERREUR: < cat
+  Fichier: test_parser.c
+  Ligne: 123
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 15:31:46
+---------------------------------------
+  Commande testée: "< cat"
+  Attendu: Commande invalide (non-0)
+  Obtenu: Commande valide (0)
+
+ERREUR: check_parenthesis mal fermée
+  Fichier: test_parser.c
+  Ligne: 162
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 15:31:46
+---------------------------------------
+
+=== FIN DE SESSION - 2 erreurs détectées ===
+======================================
+

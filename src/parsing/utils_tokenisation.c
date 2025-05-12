@@ -6,7 +6,7 @@
 /*   By: luda-cun <luda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:20:07 by mhanarte          #+#    #+#             */
-/*   Updated: 2025/05/06 13:52:32 by luda-cun         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:44:42 by luda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,9 @@ int	is_invalid_line(char *line)
 		return (0);
 	if (check_unclosed_quotes(line))
 		return (ft_printf("Quote must be enclosed by an other same quote\n",
-				RED, 2));
+				RED, 1));
 	if (check_unclosed_paren(line))
 		return (ft_printf("Parenthesis must be enclosed by an other parenthesis\n",
-				RED, 2));
+				RED, 1));
 	return (0);
 }

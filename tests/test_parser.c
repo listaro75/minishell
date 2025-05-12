@@ -114,7 +114,6 @@ int test_parser(void)
             "echo hello &&",
             "echo hello ||",
             "echo hello > ",
-            "< cat",
             NULL
         };
         
@@ -154,19 +153,79 @@ int test_parser(void)
     
     // Test de check_parenthesis
     {
-        t_token *tokens = tokenisation("(echo hello");
-        ASSERT("check_parenthesis non fermée", check_parenthesis(tokens) != 0);
-        free_token(tokens);
-        
-        tokens = tokenisation("echo hello)");
-        ASSERT("check_parenthesis mal fermée", check_parenthesis(tokens) != 0);
-        free_token(tokens);
-        
-        tokens = tokenisation("(echo hello)");
-        ASSERT("check_parenthesis sans erreur", check_parenthesis(tokens) == 0);
-        free_token(tokens);
+        char *tokens [] = {
+            "(echo hello",
+            "echo hello)",
+            "(echo hello)",
+			")(",
+			"((ls)",
+            NULL
+        };
+        ASSERT("check_parenthesis non fermée", check_unclosed_paren(tokens[0]) != 0);
+        ASSERT("check_parenthesis mal fermée", check_unclosed_paren(tokens[1]) != 0);
+        ASSERT("check_parenthesis sans erreur", check_unclosed_paren(tokens[2]) == 0);
+        ASSERT("check invers parenthesis", check_unclosed_paren(tokens[3]) != 0);
+        ASSERT("check unclosed parenthesis", check_unclosed_paren(tokens[4]) != 0);
+
     }
     
+// Test de check_parenthesis (lignes incorrectes)
+	{
+		char *invalid_parenthesis[] = {
+			"(cat |)",
+			"()",
+			"(| )",
+			"((ls))",
+			"(ls(ls)ls)",
+			"(ls | (ls) ls)",
+			"((grep | ls))",
+			NULL
+		};
+		
+		for (int i = 0; invalid_parenthesis[i] != NULL; i++) {
+			t_token *tokens = tokenisation(invalid_parenthesis[i]);
+			ASSERT(invalid_parenthesis[i], check_parenthesis(tokens) != 0);
+			if (error_log && !(check_parenthesis(tokens) != 0)) {
+				fprintf(error_log, "  Commande testée: \"%s\"\n", invalid_parenthesis[i]);
+				fprintf(error_log, "  Attendu: Parenthèses invalides (non-0)\n");
+				fprintf(error_log, "  Obtenu: Parenthèses valides (0)\n\n");
+			}
+			free_token(tokens);
+		}
+	}
+
+	// Test de check_parenthesis (lignes correctes)
+	{
+		char *valid_parenthesis[] = {
+			"(echo inside)",
+			"(echo hello) > file.txt",
+			"(ls | wc -l)",
+			"(echo 42) && echo ok",
+			"(echo start && (echo mid || echo fail)) && echo end",
+			"(cat < file.txt) | grep something",
+			"export VAR=hello",
+			"(echo $VAR)",
+			"((echo first && echo second) || echo fallback) && echo done",
+			"(ls)",
+			"(ls | (ls) | ls)",
+			"(cat | ok)",
+			"((grep) | (ls))",
+			"(ls | (ls | ls) | ls)",
+			NULL
+		};
+		
+		for (int i = 0; valid_parenthesis[i] != NULL; i++) {
+			t_token *tokens = tokenisation(valid_parenthesis[i]);
+			ASSERT(valid_parenthesis[i], check_parenthesis(tokens) == 0);
+			if (error_log && !(check_parenthesis(tokens) == 0)) {
+				fprintf(error_log, "  Commande testée: \"%s\"\n", valid_parenthesis[i]);
+				fprintf(error_log, "  Attendu: Parenthèses valides (0)\n");
+				fprintf(error_log, "  Obtenu: Parenthèses invalides (non-0)\n\n");
+			}
+			free_token(tokens);
+		}
+	}
+
     // Résumé
     printf("\nTotal: %d tests, %d réussis, %d échoués\n", 
            total_tests, total_tests - failed_tests, failed_tests);
@@ -180,3 +239,41 @@ int test_parser(void)
     
     return failed_tests;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//	"()
+	//	"(| )"
+	//	"()""
+	//	"(| )"
+	//	"((ls)",
+	//	"((ls))",
+	// 	"(ls(ls)ls)",
+	// 	"(ls | (ls) ls)",
+	// 	"((grep | ls))",
+
+
+// 	(echo inside)
+// (echo hello) > file.txt
+// (ls | wc -l)
+// (echo 42) && echo ok
+// (echo start && (echo mid || echo fail)) && echo end
+// (cat < file.txt) | grep something
+// export VAR=hello
+// (echo $VAR)
+// ((echo first && echo second) || echo fallback) && echo done
+//	"(ls)"
+// 	"(ls | (ls) | ls)",
+//	"(cat | ok)"
+// 	"((grep) | (ls))",
+// 	"(ls | (ls | ls) | ls)",

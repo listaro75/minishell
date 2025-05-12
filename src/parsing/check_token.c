@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luciendacunha <luciendacunha@student.42    +#+  +:+       +#+        */
+/*   By: luda-cun <luda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 16:43:48 by mhanarte          #+#    #+#             */
-/*   Updated: 2025/05/05 14:07:09 by luciendacun      ###   ########.fr       */
+/*   Updated: 2025/05/12 16:48:20 by luda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int	check_possible_token(t_token *token)
 	if (tmp->type == PIPE || tmp->type == OR || tmp->type == AND
 		|| check_end_line(token))
 		return (ft_printf("bash: syntax error near unexpected token\n", RED,
-				2));
+				1));
 	if (check_between_token(token))
-		return (ft_printf("bash: parse error near\n", RED, 2));
+		return (ft_printf("bash: parse error near\n", RED, 1));
 	if (check_parenthesis(token))
-		return (ft_printf("bash: bad use of parenthesis\n", RED, 2));
+		return (ft_printf("bash: bad use of parenthesis\n", RED, 1));
 	return (0);
 }
 

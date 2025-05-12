@@ -1,0 +1,57 @@
+
+=== NOUVELLE SESSION DE TEST (2025-05-12 16:20:33) ===
+
+ERREUR: ((ls)
+  Fichier: test_parser.c
+  Ligne: 186
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 16:20:33
+---------------------------------------
+  Commande testée: "((ls)"
+  Attendu: Parenthèses invalides (non-0)
+  Obtenu: Parenthèses valides (0)
+
+ERREUR: ((ls))
+  Fichier: test_parser.c
+  Ligne: 186
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 16:20:33
+---------------------------------------
+  Commande testée: "((ls))"
+  Attendu: Parenthèses invalides (non-0)
+  Obtenu: Parenthèses valides (0)
+
+ERREUR: (ls(ls)ls)
+  Fichier: test_parser.c
+  Ligne: 186
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 16:20:33
+---------------------------------------
+  Commande testée: "(ls(ls)ls)"
+  Attendu: Parenthèses invalides (non-0)
+  Obtenu: Parenthèses valides (0)
+
+ERREUR: (ls | (ls) ls)
+  Fichier: test_parser.c
+  Ligne: 186
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 16:20:33
+---------------------------------------
+  Commande testée: "(ls | (ls) ls)"
+  Attendu: Parenthèses invalides (non-0)
+  Obtenu: Parenthèses valides (0)
+
+ERREUR: ((grep | ls))
+  Fichier: test_parser.c
+  Ligne: 186
+  Fonction: test_parser
+  Date/Heure: 2025-05-12 16:20:33
+---------------------------------------
+  Commande testée: "((grep | ls))"
+  Attendu: Parenthèses invalides (non-0)
+  Obtenu: Parenthèses valides (0)
+
+
+=== FIN DE SESSION - 5 erreurs détectées ===
+======================================
+

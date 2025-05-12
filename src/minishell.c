@@ -6,7 +6,7 @@
 /*   By: luda-cun <luda-cun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:12:40 by mhanarte          #+#    #+#             */
-/*   Updated: 2025/05/06 13:48:40 by luda-cun         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:45:57 by luda-cun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*prompt(void)
 
 	input = readline(BOLD MAGENTA "➜ minishell: " RESET);
 	if (!input)
-		minishell_error("Exit\n", 2, RED, 0);
+		minishell_error("Exit\n", 1, RED, 0);
 	if (*input)
 		add_history(input);
 	return (input);
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	if (argc != 1)
-		minishell_error("Wrong number of argument\n", 2, RED, 1);
+		minishell_error("Wrong number of argument\n", 1, RED, 0);
 	while (1)
 	{
 		input = prompt();
