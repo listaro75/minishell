@@ -42,26 +42,28 @@ TOTAL = $(words $(SRC_FILES))
 LOG = logs
 TMP_LOG = .tmp_log
 TMP_NORM = .tmp_norm
+
+# Test
+SRC_TEST = tests/test_parser.c tests/test_runner.c tests/test_tokenizer.c tests/test_utils.c \
+           src/parsing/tokenisation.c \
+           src/parsing/check_token.c \
+           src/parsing/utils_tokenisation.c \
+           src/exit/exit_code.c
+
+TEST_OBJ_DIR = obj_test
+NAME_TEST = run_tests
+OBJ_TEST = $(patsubst %.c, $(TEST_OBJ_DIR)/%.o, $(SRC_TEST))
+TOTAL_TEST = $(words $(SRC_TEST))
+INDEX_TEST = 0
+
+
 # ════════════════════════════════════════════════ #
 #              🛠️ COMPILATION RULES               #
 # ════════════════════════════════════════════════ #
-all: banner $(NAME)
+all: $(NAME)
 
-banner:
-	@echo "$(CYAN)"
-	@echo "══════════════════════════════════════════════════════════════════════════════════════════"
-	@echo "$(MAGENTA)"
-	@echo "|  ███╗   ███╗ █████╗ ██╗  ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     ██╗   ██╗███████╗|"
-	@echo "|  ████╗ ████║██╔══██╗╚██╗██╔╝██║██╔════╝██║  ██║██╔════╝██║     ██║     ██║   ██║██╔════╝|"
-	@echo "|  ██╔████╔██║███████║ ╚███╔╝ ██║███████╗███████║█████╗  ██║     ██║     ██║   ██║███████╗|"
-	@echo "|  ██║╚██╔╝██║██╔══██║ ██╔██╗ ██║╚════██║██╔══██║██╔══╝  ██║     ██║     ██║   ██║╚════██║|"
-	@echo "|  ██║ ╚═╝ ██║██║  ██║██╔╝ ██╗██║███████║██║  ██║███████╗███████╗███████╗╚██████╔╝███████║|"
-	@echo "|  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝ ╚══════╝|"
-	@echo "|                                    M I N I S H E L L                                    |"
-	@echo "$(CYAN)"
-	@echo "═════════════════════════════════════════════════════════════════════════════════════════"
+
 $(NAME): $(LIBFT_A) $(OBJ_FILES)
-	
 	@$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBFT_A) $(LIBS) -o $@
 	@printf "\r["
 	@for i in $(shell seq 1 30); do printf "$(CYAN)▮$(RESET)"; done
@@ -79,6 +81,16 @@ BAR=$$BAR$$(printf "%0.s$(BLUE)▯$(RESET)" $$(seq 1 $$EMPTY)) ; \
 printf "\r[$$BAR] $$PCT%% - Compiling $(YELLOW)$(<F)$(RESET) ... "
 endef
 
+define PROGRESS_BAR_TEST
+BAR_WIDTH=30 ; \
+PCT=$$(expr 100 \* $(INDEX_TEST) / $(TOTAL_TEST)) ; \
+FILLED=$$(expr $(INDEX_TEST) \* $$BAR_WIDTH / $(TOTAL_TEST)) ; \
+EMPTY=$$(expr $$BAR_WIDTH - $$FILLED) ; \
+BAR=$$(printf "%0.s$(CYAN)▮$(RESET)" $$(seq 1 $$FILLED)) ; \
+BAR=$$BAR$$(printf "%0.s$(BLUE)▯$(RESET)" $$(seq 1 $$EMPTY)) ; \
+printf "\r[$$BAR] $$PCT%% - Compiling test: $(YELLOW)$<$(RESET) ... "
+endef
+
 INDEX = 0
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
@@ -87,8 +99,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(call PROGRESS_BAR,$(INDEX))
 	@$(CC) $(CFLAGS) -c $< -o $@ 2> .tmp_log \
 	&& printf "$(GREEN)✔️ $(RESET)" \
-	|| (mkdir -p $(LOG) && cat .tmp_log >> $(LOG)/compile_errors.log && printf "\
-	$(RED)❌$(RESET)\n" && echo "$(RED)[!] Compilation failed for:$(RESET) $(<F)" && exit 1)
+	|| (mkdir -p $(LOG) && cat .tmp_log >> $(LOG)/compile_errors.log && printf "$(RED)❌$(RESET)\n" && echo "$(RED)[!] Compilation failed for:$(RESET) $(<F)" && exit 1)
 	@rm -f .tmp_log
 
 
@@ -111,6 +122,8 @@ clean:
 	@printf "$(BROWN)🧹 Cleaning project...\n$(RESET)"
 	@printf "$(YELLOW)🗑️  Removed object directory   $(WHITE)➤ $(GRAY)$(OBJ_DIR) $(NAME)$(RESET)\n"
 	@printf "$(YELLOW)🗑️  Removed Lib obj directory  $(WHITE)➤ $(GRAY)obj libft.a$(RESET)\n"
+	@rm -rf $(TEST_OBJ_DIR)
+	@rm -f $(NAME_TEST)
 
 fclean: clean
 	@$(MAKE) -s -C $(LIBFT_DIR) fclean
@@ -136,7 +149,7 @@ log:
 norm:
 	@echo "$(CYAN)🔍 Checking norm...$(RESET)"
 	@mkdir -p logs 2>/dev/null || true
-	@norminette . | grep -v '^Norme: OK!' | grep -v ': OK!' | grep -v 'tests/' > .tmp_norm || true
+	@norminette . | grep -v '^Norme: OK!' | grep -v ': OK!' > .tmp_norm || true
 	@if grep -q 'Error:' .tmp_norm; then \
 		cat .tmp_norm; \
 		cp .tmp_norm logs/norm_errors.log; \
@@ -145,6 +158,46 @@ norm:
 		echo "$(GREEN)✅ All files passed norm check!$(RESET)"; \
 	fi
 	@rm -f .tmp_norm
+
+
+# ════════════════════════════════════════════════ #
+#                    TEST RULE               	   #
+# ════════════════════════════════════════════════ #
+test: $(LIBFT_A)
+	@mkdir -p $(TEST_OBJ_DIR)
+	@echo "$(YELLOW)🔨 Compiling tests...$(RESET)"
+	@INDEX=0 ; \
+	for SRC in $(SRC_TEST); do \
+		OBJ=$(TEST_OBJ_DIR)/$$SRC ; \
+		OBJ=$${OBJ%.c}.o ; \
+		mkdir -p "`dirname $$OBJ`" ; \
+		INDEX=$$(expr $$INDEX + 1) ; \
+		BAR_WIDTH=30 ; \
+		PCT=$$(expr 100 \* $$INDEX / $(TOTAL_TEST)) ; \
+		FILLED=$$(expr $$INDEX \* $$BAR_WIDTH / $(TOTAL_TEST)) ; \
+		EMPTY=$$(expr $$BAR_WIDTH - $$FILLED) ; \
+		BAR=$$(printf "%0.s$(CYAN)▮$(RESET)" $$(seq 1 $$FILLED)) ; \
+		BAR=$$BAR$$(printf "%0.s$(BLUE)▯$(RESET)" $$(seq 1 $$EMPTY)) ; \
+		printf "\r[$$BAR] $$PCT%% - Compiling test: $(YELLOW)$$SRC$(RESET) ... " ; \
+		$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(LIBFT_DIR)/include_libft -c $$SRC -o $$OBJ 2> .tmp_log \
+		&& printf "$(GREEN)✔️$(RESET)" \
+		|| (cat .tmp_log >> $(LOG)/compile_errors.log && printf "$(RED)❌$(RESET)\n" && exit 1) ; \
+	done
+	@rm -f .tmp_log
+	@$(CC) $(CFLAGS) $(OBJ_TEST) $(LIBFT_A) -lreadline -o $(NAME_TEST)
+	@printf "\r["
+	@for i in $(shell seq 1 30); do printf "$(CYAN)▮$(RESET)"; done
+	@printf "] 100%% - $(GREEN)✅ [OK]$(GREEN) Test executable created: $(CYAN)$(NAME_TEST) $(CYAN)🧪✔️ $(RESET)\n"
+	@echo "🧪$(GREEN) $(NAME_TEST) ready!$(RESET)"
+	@echo "$(CYAN)🚀 Running tests...$(RESET)"
+	@./$(NAME_TEST) || true
+
+
+
+$(TEST_OBJ_DIR):
+	@mkdir -p $@
+
+
 
 # ════════════════════════════════════════════════ #
 #                   🧹 CLEAR RULE                  #
@@ -163,7 +216,6 @@ clear:
 	@echo "$(CYAN)"
 	@echo "══════════════════════════════════════════════════════════════════════════════════════════"
 	@echo "$(RESET)"
-
 # ════════════════════════════════════════════════ #
 #                   🆘 HELP RULE                   #
 # ════════════════════════════════════════════════ #
@@ -178,8 +230,9 @@ help:
 	@echo "$(GREEN)make clear$(RESET)   ➤ Nettoie visuellement ton terminal 🧹"
 	@echo "$(GREEN)make log$(RESET)     ➤ Affiche les dernières erreurs de compilation"
 	@echo "$(GREEN)make norm$(RESET)    ➤ Vérifie la norme avec Norminette"
+	@echo "$(GREEN)make test$(RESET)    ➤ Run un testeur d'input"
 	@echo "$(GREEN)make help$(RESET)    ➤ Affiche cette aide"
 	@echo "$(CYAN)═══════════════════════════════════════════════════════$(RESET)"
 
 
-.PHONY: all clean fclean re log norm help banner
+.PHONY: all clean fclean re log norm help
